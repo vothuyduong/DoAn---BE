@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 
 @Data
 @NoArgsConstructor
@@ -21,6 +22,9 @@ public class Product {
     @Column(name = "category_id")
     private int categoryId;
 
+    @Column(name = "category_name")
+    private String categoryName = "";
+
     @Column(name = "product_name")
     private String productName = "";
 
@@ -33,9 +37,6 @@ public class Product {
     @Column(name = "product_sex")
     private int productSex;
 
-    @Column(name = "product_picture")
-    private String productPicture;
-
     @Column(name= "product_quantity")
     private int productQuantity = 0;
 
@@ -45,12 +46,20 @@ public class Product {
     @Column(name = "price_max")
     private double priceMax = 0;
 
-    public Product(int categoryId, String productName, String productDescribe, int isGift, int productSex, String productPicture) {
+    public Product(int categoryId, String productName, String productDescribe, int isGift, int productSex) {
         this.categoryId = categoryId;
         this.productName = productName;
         this.productDescribe = productDescribe;
         this.isGift = isGift;
         this.productSex = productSex;
-        this.productPicture = productPicture;
+    }
+
+    public Product(int id, int categoryId, String categoryName, String productName, String productDescribe, int productSex) {
+        this.id = id;
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.productName = productName;
+        this.productDescribe = productDescribe;
+        this.productSex = productSex;
     }
 }

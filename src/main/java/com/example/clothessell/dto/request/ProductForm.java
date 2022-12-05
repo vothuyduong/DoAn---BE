@@ -3,6 +3,7 @@ package com.example.clothessell.dto.request;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,5 +13,6 @@ public class ProductForm {
     private int categoryId;
     private int sex;
     private int gift;
-    private String picture;
+    private String pictureBase64;
+    private String pictureName;
 }
