@@ -10,21 +10,5 @@ import java.util.ArrayList;
 
 @Service
 public class RoleServiceImpl implements IRoleService {
-    @Autowired
-    private IRoleRepository repository;
 
-    @Override
-    public Role findByRoleName(String roleName) {
-        return repository.findByRoleName(roleName);
-    }
-
-    @Override
-    public Role findById(int id) {
-        return repository.findById(id);
-    }
-
-    @Override
-    public ArrayList<Role> findAll() {
-        return repository.findAll();
-    }
 }

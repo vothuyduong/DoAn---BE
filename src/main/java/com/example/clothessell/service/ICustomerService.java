@@ -1,20 +1,18 @@
 package com.example.clothessell.service;
 
+import com.example.clothessell.dto.request.SignInForm;
+import com.example.clothessell.dto.request.SignUpForm;
+import com.example.clothessell.dto.response.JwtResponse;
+import com.example.clothessell.dto.response.ResponseMessage;
 import com.example.clothessell.entity.Customer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 public interface ICustomerService {
-    Customer findByCustomerUsername(String username);
+    JwtResponse login(SignInForm signInForm);
 
-    Boolean existsByCustomerUsername(String username);
+    ResponseMessage register(SignUpForm signUpForm);
 
-    Boolean existsByCustomerEmail(String email);
-
-    Customer save(Customer customer);
-
-    List<Customer> getCustomers();
-
-    Customer findById(int id);
+    List<Customer> listCus();
 }
