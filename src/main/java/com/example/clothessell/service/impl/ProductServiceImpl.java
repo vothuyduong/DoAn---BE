@@ -111,12 +111,10 @@ public class ProductServiceImpl implements IProductService {
 
         int productId = productRepository.findFirstByOrderByIdDesc().getId();
 
-        String pictureBase64 = productForm.getPictureBase64();
-        String pictureName = productForm.getPictureName();
-        String picutreUri = uploadFileLocal(pictureBase64, pictureName);
+        ArrayList<String> pictureBase64 = (ArrayList<String>) productForm.getPictureBase64();
+        ArrayList<String> pictureName = (ArrayList<String>) productForm.getPictureName();
 
-        Picture picture = new Picture(pictureName, picutreUri, productId);
-        pictureRepository.save(picture);
+        pictureBase64.get(0);
 
         return productRespon;
     }
@@ -127,11 +125,8 @@ public class ProductServiceImpl implements IProductService {
             theDir.mkdirs();
         }
 
-        String filePath = "tmp/" + StringUtil.converDateToString(new Date(), "yyyyMMddhhmmss") + name;
+        String filePath = "tmp/" + StringUtil.converDateToString(new Date(), "yyyyMMddhhmmss") + "_" + name;
         File file = FileUtil.convertBase64ToFile(filePath, fileBase64);
-        if(!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
-        }
         return filePath;
     }
 

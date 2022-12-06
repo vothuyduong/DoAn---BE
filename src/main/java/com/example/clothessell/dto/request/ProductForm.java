@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,6 +15,6 @@ public class ProductForm {
     private int categoryId;
     private int sex;
     private int gift;
-    private String pictureBase64;
-    private String pictureName;
+    private List<String> pictureBase64;
+    private List<String> pictureName;
 }
