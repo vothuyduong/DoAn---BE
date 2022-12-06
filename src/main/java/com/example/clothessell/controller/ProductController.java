@@ -18,6 +18,12 @@ public class ProductController {
                                     @RequestParam(name = "size", required = false, defaultValue = "2") Integer size) {
         return ResponseEntity.ok(productService.getAll(page, size));
     }
+
+    @GetMapping("/api/products/{id}")
+    public ResponseEntity<?> getProduct(@PathVariable int id) {
+        return ResponseEntity.ok(productService.getProductById(id));
+    }
+
     @PostMapping("/api/products/add")
     public ResponseEntity<?> saveProduct(@RequestBody ProductForm productForm) {
         return ResponseEntity.ok(productService.saveProduct(productForm));

@@ -13,4 +13,6 @@ public interface IProductRepository extends JpaRepository<Product, Integer> {
     Product save(Product product);
 
     Product findFirstByOrderByIdDesc();
+
+    Product findById(int id);
 }

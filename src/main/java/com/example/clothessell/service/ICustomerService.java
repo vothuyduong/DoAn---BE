@@ -10,9 +10,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 public interface ICustomerService {
-    JwtResponse login(SignInForm signInForm);
-
-    ResponseMessage register(SignUpForm signUpForm);
 
     List<Customer> listCus();
+
+    Boolean existsByCustomerUsername(String username);
+
+    Boolean existsByCustomerEmail(String email);
+
+    Customer save(Customer customer);
 }

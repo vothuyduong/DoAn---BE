@@ -73,6 +73,30 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
+    public ProductInfoResponse getProductById(int id) {
+        Product product = productRepository.findById(id);
+        List<Picture> pictures = pictureRepository.findByProductId(id);
+        ProductInfoResponse proInfor = new ProductInfoResponse();
+        List<String> picturesResp = new ArrayList<>();
+
+        proInfor.setId(id);
+        proInfor.setCategoryId(product.getCategoryId());
+        proInfor.setCategoryName(product.getCategoryName());
+        proInfor.setName(product.getProductName());
+        proInfor.setDescribe(product.getProductDescribe());
+        proInfor.setSex(product.getProductSex());
+        proInfor.setGift(product.getIsGift());
+        proInfor.setQuantity(proInfor.getQuantity());
+
+        for(Picture p: pictures) {
+            String img = getFileLocal(p.getUri());
+            picturesResp.add(img);
+        }
+        proInfor.setPicture(picturesResp);
+        return proInfor;
+    }
+
+    @Override
     public Product saveProduct(ProductForm productForm) {
         Category cat = categoryRepository.findById(productForm.getCategoryId());
 

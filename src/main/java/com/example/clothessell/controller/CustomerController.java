@@ -20,5 +20,4 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.listCus());
     }
 
-
 }
