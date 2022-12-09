@@ -13,8 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 public class JwtResponse {
     String token;
+
+    String tokenRefresh;
     private String username;
     private String email;
+
     private List<? extends GrantedAuthority> roles;
 
     public JwtResponse(String username, String email, List<? extends GrantedAuthority> roles) {

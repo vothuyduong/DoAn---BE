@@ -1,7 +1,5 @@
 package com.example.clothessell.dto.response;
 
-import com.example.clothessell.entity.Picture;
-import com.example.clothessell.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

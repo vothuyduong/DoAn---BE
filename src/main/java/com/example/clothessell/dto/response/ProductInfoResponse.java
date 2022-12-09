@@ -18,6 +18,6 @@ public class ProductInfoResponse {
     private String describe;
     private int sex;
     private int gift;
-    private List<String> picture;
+    private List<Picture> picture;
     private int quantity;
 }

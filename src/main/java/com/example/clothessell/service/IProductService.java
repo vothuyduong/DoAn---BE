@@ -14,4 +14,6 @@ public interface IProductService {
 
     Product saveProduct(ProductForm productForm);
 
+    Product updateProduct(ProductInfoResponse productInfoResponse);
+
 }

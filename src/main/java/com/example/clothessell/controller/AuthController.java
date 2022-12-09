@@ -1,14 +1,17 @@
 package com.example.clothessell.controller;
 
+import com.example.clothessell.dto.request.RefreshTokenRequest;
 import com.example.clothessell.dto.request.SignInForm;
 import com.example.clothessell.dto.request.SignUpForm;
 import com.example.clothessell.dto.response.JwtResponse;
 import com.example.clothessell.dto.response.ResponseMessage;
 import com.example.clothessell.entity.Customer;
+import com.example.clothessell.entity.RefreshToken;
 import com.example.clothessell.repository.IRoleRepository;
 import com.example.clothessell.security.jwt.JwtProvider;
 import com.example.clothessell.security.userprincipal.UserPrinciple;
 import com.example.clothessell.service.impl.CustomerServiceImpl;
+import com.example.clothessell.service.impl.RefreshTokenServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,6 +35,9 @@ public class AuthController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    RefreshTokenServiceImpl refreshTokenService;
+
     @PostMapping("/signup")
     public ResponseEntity<?> register(@RequestBody SignUpForm signUpForm) {
         if(customerService.existsByCustomerUsername(signUpForm.getUsername())) {
@@ -53,6 +59,15 @@ public class AuthController {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInForm.getUsername(), signInForm.getPassword()));
         String token = jwtProvider.createToken(authentication);
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
-        return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getUsername(), userPrinciple.getEmail(), userPrinciple.getAuthorities()));
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userPrinciple.getId());
+        return ResponseEntity.ok(new JwtResponse(token, refreshToken.getToken(), userPrinciple.getUsername(), userPrinciple.getEmail(), userPrinciple.getAuthorities()));
+    }
+
+    public ResponseEntity<?> refreshtoken(@RequestBody RefreshTokenRequest tokenRequest) {
+        String requestRefreshToken = tokenRequest.getRefreshToken();
+        if(refreshTokenService.findByToken(requestRefreshToken) == null) {
+            return ResponseEntity.ok(new ResponseMessage("Token refresh not exist!"));
+        }
+        return ResponseEntity.ok(null);
     }
 }

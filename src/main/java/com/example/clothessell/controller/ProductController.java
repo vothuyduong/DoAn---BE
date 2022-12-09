@@ -1,6 +1,10 @@
 package com.example.clothessell.controller;
 
 import com.example.clothessell.dto.request.ProductForm;
+import com.example.clothessell.dto.response.ProductInfoResponse;
+import com.example.clothessell.dto.response.ProductResponse;
+import com.example.clothessell.dto.response.ResponseMessage;
+import com.example.clothessell.entity.Product;
 import com.example.clothessell.service.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +30,15 @@ public class ProductController {
 
     @PostMapping("/api/products/add")
     public ResponseEntity<?> saveProduct(@RequestBody ProductForm productForm) {
-        return ResponseEntity.ok(productService.saveProduct(productForm));
+        Product product = productService.saveProduct(productForm);
+        if(product == null) {
+            new ResponseMessage("Thông tin ảnh gửi lên không đúng!");
+        }
+        return ResponseEntity.ok(product);
+    }
+
+    @PostMapping("/api/products/edit")
+    public ResponseEntity<?> editProduct(@RequestBody ProductInfoResponse productInfoResponse) {
+        return ResponseEntity.ok(productService.updateProduct(productInfoResponse));
     }
 }

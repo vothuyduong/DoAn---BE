@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -36,7 +37,7 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public ProductResponse getAll(Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
         Page<Product> pageItem = productRepository.findAll(pageable);
 
         long totalItems = pageItem.getTotalElements();
@@ -51,15 +52,15 @@ public class ProductServiceImpl implements IProductService {
             pr.setName(p.getProductName());
             pr.setDescribe(p.getProductDescribe());
             pr.setSex(p.getProductSex());
+            pr.setGift(p.getIsGift());
             pr.setQuantity(p.getProductQuantity());
 
             List<Picture> listPicture = pictureRepository.findByProductId(p.getId());
-            List<String> listPictureRespon = new ArrayList<>();
             for(Picture picture: listPicture) {
                 String rs = getFileLocal(picture.getUri());
-                listPictureRespon.add(rs);
+                picture.setBase64(rs);
             }
-            pr.setPicture(listPictureRespon);
+            pr.setPicture(listPicture);
 
             listProductRespon.add(pr);
         }
@@ -75,9 +76,7 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public ProductInfoResponse getProductById(int id) {
         Product product = productRepository.findById(id);
-        List<Picture> pictures = pictureRepository.findByProductId(id);
         ProductInfoResponse proInfor = new ProductInfoResponse();
-        List<String> picturesResp = new ArrayList<>();
 
         proInfor.setId(id);
         proInfor.setCategoryId(product.getCategoryId());
@@ -88,11 +87,13 @@ public class ProductServiceImpl implements IProductService {
         proInfor.setGift(product.getIsGift());
         proInfor.setQuantity(proInfor.getQuantity());
 
+        List<Picture> pictures = pictureRepository.findByProductId(id);
+
         for(Picture p: pictures) {
             String img = getFileLocal(p.getUri());
-            picturesResp.add(img);
+            p.setBase64(img);
         }
-        proInfor.setPicture(picturesResp);
+        proInfor.setPicture(pictures);
         return proInfor;
     }
 
@@ -110,13 +111,47 @@ public class ProductServiceImpl implements IProductService {
         Product productRespon = productRepository.save(product);
 
         int productId = productRepository.findFirstByOrderByIdDesc().getId();
+        List<String> pictureBase64 = productForm.getPictureBase64();
+        List<String> pictureName = productForm.getPictureName();
 
-        ArrayList<String> pictureBase64 = (ArrayList<String>) productForm.getPictureBase64();
-        ArrayList<String> pictureName = (ArrayList<String>) productForm.getPictureName();
+        int sizeArrBase64 = pictureBase64.size();
+        int sizeArrName = pictureName.size();
+        if(sizeArrName != sizeArrBase64) {
+            return null;
+        }
 
-        pictureBase64.get(0);
+        for(int i = 0; i < sizeArrName; i++) {
+            String uri = uploadFileLocal(pictureBase64.get(i), pictureName.get(i));
+            Picture picture = new Picture();
+            picture.setName(pictureName.get(i));
+            picture.setUri(uri);
+            picture.setProductId(productId);
+            pictureRepository.save(picture);
+        }
 
         return productRespon;
+    }
+
+    @Override
+    public Product updateProduct(ProductInfoResponse productInfoResponse) {
+        Product product = productRepository.findById(productInfoResponse.getId());
+        product.setProductName(productInfoResponse.getName());
+        product.setProductDescribe(productInfoResponse.getDescribe());
+        product.setCategoryId(productInfoResponse.getCategoryId());
+        product.setCategoryName(categoryRepository.findById(productInfoResponse.getCategoryId()).getCategoryName());
+        product.setProductSex(productInfoResponse.getSex());
+        product.setIsGift(productInfoResponse.getGift());
+        productRepository.save(product);
+
+        List<Picture> pictures = productInfoResponse.getPicture();
+        for(Picture pic: pictures) {
+            if(pic.getUri() == "") {
+                pic.setUri(uploadFileLocal(pic.getBase64(), pic.getName()));
+                pic.setBase64("");
+                pictureRepository.save(pic);
+            }
+        }
+        return product;
     }
 
     private String uploadFileLocal(String fileBase64, String name) {
