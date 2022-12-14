@@ -33,5 +33,14 @@ public class CustomerServiceImpl implements ICustomerService {
         return repository.save(customer);
     }
 
+    @Override
+    public Customer findByUsername(String username) {
+        return repository.findByCustomerUsername(username);
+    }
+
+    @Override
+    public Customer findById(int id) {
+        return repository.findById(id);
+    }
 
 }

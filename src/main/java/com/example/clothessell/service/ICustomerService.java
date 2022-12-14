@@ -18,4 +18,8 @@ public interface ICustomerService {
     Boolean existsByCustomerEmail(String email);
 
     Customer save(Customer customer);
+
+    Customer findByUsername(String username);
+
+    Customer findById(int id);
 }

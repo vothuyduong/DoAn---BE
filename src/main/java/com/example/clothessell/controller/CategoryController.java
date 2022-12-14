@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5173/")
 public class CategoryController {
     @Autowired
     private CategoryServiceImpl categoryService;

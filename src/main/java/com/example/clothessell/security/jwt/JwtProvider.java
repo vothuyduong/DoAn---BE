@@ -1,5 +1,6 @@
 package com.example.clothessell.security.jwt;
 
+import com.example.clothessell.entity.Customer;
 import com.example.clothessell.security.userprincipal.UserPrinciple;
 import com.example.clothessell.service.impl.CustomerServiceImpl;
 import io.jsonwebtoken.*;
@@ -17,7 +18,7 @@ import java.util.Date;
 public class JwtProvider {
     private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
     private String jwtSecret = "sora";
-    private int jwtExpiration = 86400;
+    private int jwtExpiration = 3600000;
 
     @Autowired
     private CustomerServiceImpl customerService;
@@ -26,32 +27,29 @@ public class JwtProvider {
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
         return Jwts.builder()
                 .setSubject(userPrinciple.getUsername())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime() + jwtExpiration*1000))
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
             return true;
-        } catch (SignatureException e) {
-            logger.error("Invalid JWT signature -> Message: {}", e);
-        } catch (MalformedJwtException e) {
-            logger.error("The token invalid format -> Message: {}", e);
-        } catch (UnsupportedJwtException e) {
-            logger.error("Unsupported JWT token -> Message: {}", e);
         } catch (ExpiredJwtException e) {
-            logger.error("Expired JWT Token -> Message: {}", e);
-        } catch (IllegalArgumentException e) {
-            logger.error("JWT claims string is empty -> Message: {}", e);
+            System.out.println("Token expired "+ e.getMessage());
+        } catch (SignatureException e) {
+            System.out.println("Error signature");
+        } catch(Exception e){
+            System.out.println(" Some other exception in JWT parsing ");
         }
         return false;
     }
 
-    public String getUsernameFromToken(String token) {
+    public Customer getUsernameFromToken(String token) {
         String username = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
-        return username;
+        Customer customer = customerService.findByUsername(username);
+        return customer;
     }
 }

@@ -1,5 +1,7 @@
 package com.example.clothessell.security.jwt;
 
+import com.example.clothessell.dto.response.ResponseMessage;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +31,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             String token = getJwt(request);
-            if(token != null && jwtProvider.validateToken(token)) {
-                String username = jwtProvider.getUsernameFromToken(token);
+            if (token != null && jwtProvider.validateToken(token)) {
+                String username = jwtProvider.getUsernameFromToken(token).getCustomerUsername();
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities()
+                        userDetails, null, userDetails.getAuthorities()
                 );
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
@@ -46,7 +48,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private String getJwt(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
-        if(authHeader != null && authHeader.startsWith("Bearer")) {
+        if(authHeader != null && authHeader.startsWith("Bearer ")) {
             return authHeader.replace("Bearer", "");
         }
         return null;
