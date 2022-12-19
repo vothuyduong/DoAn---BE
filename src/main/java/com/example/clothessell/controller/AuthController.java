@@ -19,6 +19,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,9 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     @Autowired
     CustomerServiceImpl customerService;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -77,7 +82,7 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse("", refreshToken.getToken(), userPrinciple.getUsername(), userPrinciple.getEmail(), userPrinciple.getAuthorities()));
     }
 
-    @GetMapping("/refreshtoken")
+    @PostMapping("/refreshtoken")
     public ResponseEntity<?> refreshtoken(@RequestBody RefreshTokenRequest tokenRequest) {
         String requestRefreshToken = tokenRequest.getRefreshToken();
         RefreshToken refreshToken = refreshTokenService.findByToken(requestRefreshToken);
@@ -85,9 +90,13 @@ public class AuthController {
             return ResponseEntity.ok(new ResponseMessage("Token refresh not exist!"));
         }
         Customer customer = customerService.findById(refreshToken.getUserId());
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(customer.getCustomerUsername(), customer.getCustomerPassword()));
-        UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
-        String token = jwtProvider.createToken(authentication);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(customer.getCustomerUsername());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities()
+        );
+        UserPrinciple userPrinciple = (UserPrinciple) authenticationToken.getPrincipal();
+        String token = jwtProvider.createToken(authenticationToken);
+        System.out.println(token);
         return ResponseEntity.ok(new JwtResponse(token, requestRefreshToken, userPrinciple.getUsername(), userPrinciple.getEmail(), userPrinciple.getAuthorities()));
     }
 }

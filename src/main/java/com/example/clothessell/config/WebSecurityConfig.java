@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/signup", "/signin")
+                .antMatchers("/signup", "/signin", "/refreshtoken")
                 .permitAll()
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

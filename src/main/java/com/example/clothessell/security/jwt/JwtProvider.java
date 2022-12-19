@@ -18,7 +18,7 @@ import java.util.Date;
 public class JwtProvider {
     private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
     private String jwtSecret = "sora";
-    private int jwtExpiration = 3600000;
+    private int jwtExpiration = 860000;
 
     @Autowired
     private CustomerServiceImpl customerService;
