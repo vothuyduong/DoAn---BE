@@ -28,10 +28,6 @@ public class ProductSize {
     @NotEmpty(message = "Product id is not empty!")
     private int productId;
 
-    @Column(name = "product_picture")
-    @NotEmpty(message = "Product picture is not empty!")
-    private String productPicture;
-
     @Column(name = "product_price")
     @NotEmpty(message = "Product price is not empty!")
     private double productPrice;
