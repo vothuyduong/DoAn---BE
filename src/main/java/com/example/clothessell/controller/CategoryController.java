@@ -14,8 +14,8 @@ public class CategoryController {
     private CategoryServiceImpl categoryService;
 
     @GetMapping("/api/categories/all")
-    private ResponseEntity<?> getAllCategory() {
-        return ResponseEntity.ok(categoryService.getAll());
+    private ResponseEntity<?> getAllCategory(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "7") int size) {
+        return ResponseEntity.ok(categoryService.getAll(page, size));
     }
 
     @GetMapping("/api/categories/{id}")

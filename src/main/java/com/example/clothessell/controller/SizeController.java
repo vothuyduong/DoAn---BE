@@ -20,6 +20,11 @@ public class SizeController {
         return ResponseEntity.ok(sizeResponse);
     }
 
+    @GetMapping("/api/sizes/all/cat")
+    public ResponseEntity<?> getAllSelect() {
+        return ResponseEntity.ok(sizeService.getAllSelect());
+    }
+
     @PostMapping("/api/sizes/add")
     public ResponseEntity<?> addSize(@RequestBody Size size) {
         if(sizeService.findByName(size.getSizeName()) != null) {

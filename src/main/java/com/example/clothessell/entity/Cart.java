@@ -19,10 +19,6 @@ public class Cart {
     private int id;
 
     @Column(name = "customer_id")
-    @NotEmpty(message = "Customer id is empty!")
     private int customerId;
 
-    @Column(name = "money_total")
-    @NotEmpty(message = "Money total is empty!")
-    private double moneyTotal = 0;
 }

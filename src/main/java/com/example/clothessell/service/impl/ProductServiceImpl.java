@@ -20,9 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ProductServiceImpl implements IProductService {
@@ -71,6 +69,19 @@ public class ProductServiceImpl implements IProductService {
         productResponse.setTotalPages(totalPages);
 
         return productResponse;
+    }
+
+    @Override
+    public List<Map<String, Object>> getAllSelect() {
+        List<Product> listProducts = productRepository.findAll();
+        List<Map<String, Object>> result = new ArrayList<>();
+        for(Product product: listProducts) {
+            Map<String, Object> listProductsResponse = new HashMap<>();
+            listProductsResponse.put("id", product.getId());
+            listProductsResponse.put("productName", product.getProductName());
+            result.add(listProductsResponse);
+        }
+        return result;
     }
 
     @Override

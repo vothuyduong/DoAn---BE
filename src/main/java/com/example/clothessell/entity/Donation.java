@@ -5,24 +5,32 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import java.sql.Timestamp;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "category")
-public class Category {
+@Table(name = "donation")
+public class Donation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @Column(name = "category_name")
-    @NotEmpty(message = "Category name is empty!")
-    private String categoryName;
+    private String picture;
 
-    public Category(String categoryName) {
-        this.categoryName = categoryName;
-    }
+    private int quantity;
+
+    private Timestamp takeTime;
+
+    private String takeAddress;
+
+    private int statu;
+
+    private int idVolunteer;
+
+    private int idCustomer;
+
+    private Timestamp receivingTime;
 }

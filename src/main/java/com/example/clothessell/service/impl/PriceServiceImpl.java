@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -60,6 +61,29 @@ public class PriceServiceImpl implements IPriceService {
         priceResponse.setTotalPage(totalPage);
         priceResponse.setTotalItem(totalItem);
         return priceResponse;
+    }
+
+    @Override
+    public ProductSize saveItem(ProductSize productSize) {
+        ProductSize pro = priceRepository.findBySizeIdAndProductId(productSize.getSizeId(), productSize.getProductId());
+        if(pro != null) {
+            return null;
+        }
+        return priceRepository.save(productSize);
+    }
+
+    @Override
+    public ProductSize getInfo(int id) {
+        return priceRepository.findById(id);
+    }
+
+    @Override
+    public ProductSize updateItem(ProductSize productSize) {
+        ProductSize pro = priceRepository.findById(productSize.getId());
+        if (pro == null) {
+            return null;
+        }
+        return priceRepository.save(productSize);
     }
 
 

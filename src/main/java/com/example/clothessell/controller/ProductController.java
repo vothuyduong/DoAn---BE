@@ -19,8 +19,13 @@ public class ProductController {
 
     @GetMapping("/api/products/all")
     public ResponseEntity<?> getAll(@RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-                                    @RequestParam(name = "size", required = false, defaultValue = "2") Integer size) {
+                                    @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
         return ResponseEntity.ok(productService.getAll(page, size));
+    }
+
+    @GetMapping("/api/products/all/category")
+    public ResponseEntity<?> getAllSelect() {
+        return ResponseEntity.ok(productService.getAllSelect());
     }
 
     @GetMapping("/api/products/{id}")

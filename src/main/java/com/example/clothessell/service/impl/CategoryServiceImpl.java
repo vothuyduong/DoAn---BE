@@ -1,12 +1,18 @@
 package com.example.clothessell.service.impl;
 
+import com.example.clothessell.dto.response.CategoryResponse;
 import com.example.clothessell.entity.Category;
 import com.example.clothessell.repository.ICategoryRepository;
 import com.example.clothessell.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CategoryServiceImpl implements ICategoryService {
@@ -14,8 +20,15 @@ public class CategoryServiceImpl implements ICategoryService {
     private ICategoryRepository categoryRepository;
 
     @Override
-    public ArrayList<Category> getAll() {
-        return categoryRepository.findAll();
+    public CategoryResponse getAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        Page<Category> list = categoryRepository.findAll(pageable);
+        List<Category> listCategory = list.getContent();
+        CategoryResponse categoryResponse = new CategoryResponse();
+        categoryResponse.setCategories(listCategory);
+        categoryResponse.setTotalPage(list.getTotalPages());
+        categoryResponse.setTotalItem(list.getTotalElements());
+        return categoryResponse;
     }
 
     @Override

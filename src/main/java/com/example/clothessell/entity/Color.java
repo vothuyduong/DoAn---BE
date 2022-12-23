@@ -5,24 +5,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "category")
-public class Category {
+@Table(name = "settingwebclient")
+public class Color {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-
-    @Column(name = "category_name")
-    @NotEmpty(message = "Category name is empty!")
-    private String categoryName;
-
-    public Category(String categoryName) {
-        this.categoryName = categoryName;
-    }
+    private String clientColor;
+    private String clientFont;
 }

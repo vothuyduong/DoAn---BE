@@ -6,9 +6,12 @@ import com.example.clothessell.dto.response.ProductResponse;
 import com.example.clothessell.entity.Product;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IProductService {
     ProductResponse getAll(Integer page, Integer size);
+
+    List<Map<String, Object>> getAllSelect();
 
     ProductInfoResponse getProductById(int id);
 

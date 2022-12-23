@@ -9,4 +9,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IPriceRepository extends JpaRepository<ProductSize, Integer> {
     Page<ProductSize> findAll(Pageable pageable);
+
+    ProductSize save(ProductSize productSize);
+
+    ProductSize findBySizeIdAndProductId(int sizeId, int productId);
+
+    ProductSize findById(int id);
 }

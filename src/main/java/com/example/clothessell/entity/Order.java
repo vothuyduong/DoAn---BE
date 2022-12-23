@@ -36,7 +36,9 @@ public class Order {
     @NotEmpty(message = "Customer address is not empty!")
     private String customerAddress;
 
+    @Column(name = "payment")
+    private int payment;
+
     @Column(name = "money_total")
-    @NotEmpty(message = "Money toal is not empty!")
     private double moneyTotal = 0;
 }

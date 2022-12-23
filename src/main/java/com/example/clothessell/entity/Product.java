@@ -37,14 +37,14 @@ public class Product {
     @Column(name = "product_sex")
     private int productSex;
 
-    @Column(name= "product_quantity")
-    private int productQuantity = 0;
+    @Column(columnDefinition = "integer default 0")
+    private int productQuantity;
 
-    @Column(name = "price_min")
-    private double priceMin = 0;
+    @Column(columnDefinition = "double default 0")
+    private double priceMin;
 
-    @Column(name = "price_max")
-    private double priceMax = 0;
+    @Column(columnDefinition = "double default 0")
+    private double priceMax;
 
     public Product(int categoryId, String productName, String productDescribe, int isGift, int productSex) {
         this.categoryId = categoryId;

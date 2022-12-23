@@ -2,6 +2,7 @@ package com.example.clothessell.service;
 
 import com.example.clothessell.dto.request.SignInForm;
 import com.example.clothessell.dto.request.SignUpForm;
+import com.example.clothessell.dto.response.CustomerResponse;
 import com.example.clothessell.dto.response.JwtResponse;
 import com.example.clothessell.dto.response.ResponseMessage;
 import com.example.clothessell.entity.Customer;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public interface ICustomerService {
 
-    List<Customer> listCus();
+    CustomerResponse listCus(int page, int size);
 
     Boolean existsByCustomerUsername(String username);
 

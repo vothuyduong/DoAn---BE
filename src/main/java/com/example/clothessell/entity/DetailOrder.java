@@ -30,7 +30,9 @@ public class DetailOrder {
     @NotEmpty(message = "Product size is not empty!")
     private String productSize;
 
+    @Column(name = "product_price")
+    private double productPrice;
+
     @Column(name = "product_quantity")
-    @NotEmpty(message = "Product quantity is not empty!")
     private int productQuantity = 0;
 }

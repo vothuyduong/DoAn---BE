@@ -1,6 +1,5 @@
 package com.example.clothessell.entity;
 
-import jdk.jfr.Enabled;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "product_size")
+@Table(name = "price")
 public class ProductSize {
 
     @Id
@@ -21,18 +20,14 @@ public class ProductSize {
     private int id;
 
     @Column(name = "size_id")
-    @NotEmpty(message = "Size id is not empty!")
     private int sizeId;
 
     @Column(name = "product_id")
-    @NotEmpty(message = "Product id is not empty!")
     private int productId;
 
     @Column(name = "product_price")
-    @NotEmpty(message = "Product price is not empty!")
     private double productPrice;
 
     @Column(name = "product_quantity")
-    @NotEmpty(message = "Product quantity is not empty!")
     private int productQuantity = 0;
 }

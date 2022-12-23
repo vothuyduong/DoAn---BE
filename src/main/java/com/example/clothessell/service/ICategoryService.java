@@ -1,11 +1,12 @@
 package com.example.clothessell.service;
 
+import com.example.clothessell.dto.response.CategoryResponse;
 import com.example.clothessell.entity.Category;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 public interface ICategoryService {
-    ArrayList<Category> getAll();
+    CategoryResponse getAll(int page, int size);
 
     Category saveCategory(Category category);
 

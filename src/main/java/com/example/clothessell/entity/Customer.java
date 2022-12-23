@@ -37,14 +37,13 @@ public class Customer {
     private String customerEmail;
 
     @Column(name = "customer_username")
-
     private String customerUsername;
 
     @Column(name = "customer_password")
     private String customerPassword;
 
-    @Column(name = "customer_point")
-    private int customerPoint = 0;
+    @Column(columnDefinition = "integer default 0")
+    private int customerPoint;
 
     @Column(name = "customer_avatar")
     private String customerAvatar = "";
