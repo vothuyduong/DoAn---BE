@@ -25,7 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin("http://127.0.0.1:5173")
+@CrossOrigin("http://localhost:5173/")
 public class AuthController {
     @Autowired
     CustomerServiceImpl customerService;
